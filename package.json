@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "akageun <akageun@gmail.com>",
   "description": "My File Manager",
-  "license": null,
+  "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -54,6 +54,9 @@
     }
   },
   "dependencies": {
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.3",
     "vue": "^2.5.16",
     "axios": "^0.18.0",
     "vue-electron": "^1.0.6",
@@ -63,6 +66,7 @@
   },
   "devDependencies": {
     "ajv": "^6.5.0",
+    "expose-loader": "^0.7.5",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-runtime": "^6.23.0",

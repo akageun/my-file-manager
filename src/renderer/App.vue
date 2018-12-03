@@ -1,15 +1,21 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+    <div id="app">
+        <Gnb/>
+        <router-view/>
+    </div>
 </template>
 
 <script>
-  export default {
-    name: 'my_file_manager'
-  }
+    import Gnb from '@/components/Layouts/Gnb'
+
+    export default {
+        name: 'my_file_manager',
+        components: {
+            Gnb
+        }
+    }
 </script>
 
 <style>
-  /* CSS */
+    /* CSS */
 </style>
