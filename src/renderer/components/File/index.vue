@@ -1,12 +1,15 @@
 <template>
     <div>
-        파일 리스트
+        <File_List/>
     </div>
 </template>
 
 <script>
+    import File_List from "./File_List";
+
     export default {
-        name: "index"
+        name: "index",
+        components: {File_List}
     }
 </script>
 

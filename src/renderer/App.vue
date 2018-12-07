@@ -18,4 +18,7 @@
 
 <style>
     /* CSS */
+    #app{
+        margin-bottom: 50px;
+    }
 </style>
