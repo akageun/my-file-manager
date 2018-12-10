@@ -26,6 +26,11 @@ export default new Router({
             component: require('@/components/Setting/FilePathManage').default
         },
         {
+            path: '/setting/tags',
+            name: 'settingTags',
+            component: require('@/components/Setting/Tags').default
+        },
+        {
             path: '*',
             redirect: '/'
         }
