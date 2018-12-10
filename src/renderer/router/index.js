@@ -21,6 +21,11 @@ export default new Router({
             component: require('@/components/Setting').default
         },
         {
+            path: '/setting/filePath',
+            name: 'settingFilePath',
+            component: require('@/components/Setting/FilePathManage').default
+        },
+        {
             path: '*',
             redirect: '/'
         }

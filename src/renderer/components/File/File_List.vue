@@ -34,7 +34,7 @@
 
                         <ul id="list-group-ul" class="list-group">
                             <li class="list-group-item" v-for="file in fileList">
-                                {{file.isDirectory}}/{{file.fileName | liveSubstr}}
+                                {{file.fileName | liveSubstr}}
                             </li>
                         </ul>
 
@@ -49,11 +49,14 @@
     const fs = require('fs');
     const path = require('path');
 
+    const Store = require("electron-store");
+    const settingConf = new Store({name: 'settingConf'});
+
     export default {
         name: "File_List",
         data() {
             return {
-                baseDir: '/Users/akageun/Downloads',
+                baseDir: '',
                 fileList: {}
             }
         },
@@ -67,10 +70,15 @@
         },
         created() {
             this.initFileList();
+
+
         },
         methods: {
             initFileList() {
                 let list = [];
+                const confJson = settingConf.get('file');
+                this.baseDir = confJson.targetPath;
+
                 const tmpBaseDir = this.baseDir;
                 const readFileList = fs.readdirSync(tmpBaseDir);
 
