@@ -35,8 +35,8 @@
 <script>
     import Lnb from "../lnb";
     import StrUtils from '@/service/utils/StrUtils';
+    import Store from 'electron-store';
 
-    const Store = require("electron-store");
     const settingConf = new Store({name: 'settingConf'});
 
     export default {

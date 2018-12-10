@@ -8,8 +8,7 @@ import store from './store'
 import 'expose-loader?$!expose-loader?jQuery!jquery'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
-
-require("./assets/common.css");
+import './assets/common.css';
 
 if (!process.env.IS_WEB) {
     Vue.use(require('vue-electron'))
