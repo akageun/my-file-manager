@@ -36,6 +36,13 @@
     width: 70% !important;
 }
 
-.cursor-pointer{
+.cursor-pointer {
     cursor: pointer;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+    padding: .25rem .4rem;
+    font-size: .875rem;
+    line-height: .9;
+    border-radius: .2rem;
 }

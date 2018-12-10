@@ -14,13 +14,14 @@
                     <li class="list-group-item" v-for="file in fileList">
                         {{file.fileName | liveSubstr}}
                         <div class="float-right" v-if="file.isDirectory === false">
-                            <span class="badge badge-info badge-pill cursor-pointer" @click="infoFile(file)">INFO</span>
-                            <span class="badge badge-success badge-pill cursor-pointer" @click="copyFile(file.fileName)">COPY</span>
-                            <span class="badge badge-warning badge-pill cursor-pointer" @click="moveFile(file.fileName)">MOVE</span>
-                            <span class="badge badge-danger badge-pill cursor-pointer" @click="deleteFile(file.fileName)">DELETE</span>
+
+                            <a class="btn btn-outline-info btn-xs" @click="infoFile(file)">INFO</a>
+                            <a class="btn btn-outline-success btn-xs" @click="copyFile(file.fileName)">COPY</a>
+                            <a class="btn btn-outline-warning btn-xs" @click="moveFile(file.fileName)">MOVE</a>
+                            <a class="btn btn-outline-danger btn-xs" @click="deleteFile(file.fileName)">DELETE</a>
                         </div>
 
-                        <div  v-if="file.clicked">
+                        <div v-if="file.clicked">
                             <hr>
                             <p>
                                 {{file.statInfo}}
@@ -59,11 +60,11 @@
         },
         created() {
             const confJson = settingConf.get('file');
+
             this.targetPath = confJson.targetPath;
             this.savePath = confJson.savePath;
 
             this.initFileList();
-
         },
         methods: {
             initFileList() {
