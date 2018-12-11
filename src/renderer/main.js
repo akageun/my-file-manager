@@ -12,6 +12,9 @@ import './assets/common.css';
 
 import cmnModule from './service/cmn_module';
 
+import vSelect from 'vue-select'
+Vue.component('v-select', vSelect)
+
 if (!process.env.IS_WEB) {
     Vue.use(require('vue-electron'))
 }

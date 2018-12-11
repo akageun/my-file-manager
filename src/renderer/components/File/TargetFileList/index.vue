@@ -20,9 +20,9 @@
                                 <div class="float-right" v-if="file.isDirectory === false">
 
                                     <a class="btn btn-outline-info btn-xs" @click="infoFile(file)">INFO</a>
-                                    <!--<a class="btn btn-outline-success btn-xs" @click="copyFile(file.fileName)">COPY</a>-->
-                                    <!--<a class="btn btn-outline-warning btn-xs" @click="moveFile(file.fileName)">MOVE</a>-->
-                                    <a class="btn btn-outline-warning btn-xs" @click="saveFile(file)">MOVE</a>
+                                    <a class="btn btn-outline-success btn-xs" @click="copyFile(file.fileName)">COPY</a>
+                                    <a class="btn btn-outline-warning btn-xs" @click="moveFile(file.fileName)">MOVE</a>
+                                    <!--<a class="btn btn-outline-warning btn-xs" @click="saveFile(file)">MOVE</a>-->
                                     <a class="btn btn-outline-danger btn-xs" @click="deleteFile(file.fileName)">DELETE</a>
                                 </div>
 
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -49,19 +49,33 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="saveFileModalFrm">
+                        <form id="saveFileModalFrm" onsubmit="return false;">
                             <div class="form-group">
-                                <p id="file_name"></p>
+                                <p>{{modal_file_name}}</p>
                             </div>
                             <div class="form-group">
                                 <label for="memo" class="col-form-label">Memo</label>
                                 <textarea class="form-control" id="memo" name="memo" style="resize: none" rows="5"></textarea>
                             </div>
+                            <!--<div class="form-group">-->
+                                <!--<v-select v-model="tagSelectedList" :options="tagList" multiple></v-select>-->
+                            <!--</div>-->
+                            <div class="form-group">
+                                <label for="memo" class="col-form-label"> Type </label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="transType" id="copy_trans" value="COPY" checked>
+                                    <label class="form-check-label" for="copy_trans">COPY</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="transType" id="move_trans" value="MOVE">
+                                    <label class="form-check-label" for="move_trans">MOVE</label>
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Send message</button>
+                        <button type="button" class="btn btn-primary" @click="trans">Trans</button>
                     </div>
                 </div>
             </div>
@@ -78,12 +92,16 @@
 
     export default {
         name: "index",
-        components: {Lnb},
+        components: {Lnb, "vue-select": require("vue-select")},
         data() {
             return {
                 targetPath: '',
                 savePath: '',
-                fileList: {}
+                fileList: {},
+                modal_file_name: '',
+                tagSelectedList: [],
+                tagList: {}
+
             }
         },
         filters: {
@@ -103,6 +121,9 @@
             this.initFileList();
         },
         methods: {
+            trans() {
+                console.log(document.getElementById('tmpSelect2').value);
+            },
             initFileList() {
                 let list = [];
 
@@ -166,11 +187,33 @@
 
             },
             saveFile(file) {
-                document.getElementById("file_name").innerText = file.fileName;
+                this.modal_file_name = file.fileName;
 
                 $("#exampleModal").modal({
                     backdrop: 'static'
                 })
+
+                // const tagDb = this.$cmnModule.tagDbConf();
+                //
+                // let vm = this;
+                // tagDb.find({}, function (err, docs) {
+                //     let tmpJson = [];
+                //
+                //     for (const jn of docs) {
+                //         let t = {};
+                //         t.value = jn._id;
+                //         t.label = jn.tagName;
+                //
+                //         tmpJson.push(t);
+                //     }
+                //
+                //     console.log(tmpJson);
+                //
+                //     vm.tagList = tmpJson;
+                //
+                // });
+
+
             },
             copyFile(fileName) {
                 const dt = this.getDateForPath();

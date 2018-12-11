@@ -25,5 +25,12 @@ export default ({
             autoload: true,
             timestampData: true
         });
+    },
+    tagDbConf() {
+        return new Datastore({
+            filename: path.join((electron.app || electron.remote.app).getPath('userData'), 'mfm', 'tagDb'),
+            autoload: true,
+            timestampData: true
+        });
     }
 });
