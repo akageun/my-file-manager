@@ -35,9 +35,6 @@
 <script>
     import Lnb from "../lnb";
     import StrUtils from '@/service/utils/StrUtils';
-    import Store from 'electron-store';
-
-    const settingConf = new Store({name: 'settingConf'});
 
     export default {
         name: "index",
@@ -49,6 +46,8 @@
             }
         },
         created() {
+            const settingConf = this.$cmnModule.settingConf();
+
             const confJson = settingConf.get('file');
 
             this.targetPath = confJson.targetPath;
@@ -64,6 +63,7 @@
                     alert("Save Path를 입력해주세요.");
                 }
 
+                const settingConf = this.$cmnModule.settingConf();
                 settingConf.set('file', {targetPath: this.targetPath, savePath: this.savePath});
             }
         }

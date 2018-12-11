@@ -10,10 +10,12 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './assets/common.css';
 
+import cmnModule from './service/cmn_module';
+
 if (!process.env.IS_WEB) {
     Vue.use(require('vue-electron'))
 }
-
+Vue.prototype.$cmnModule = cmnModule;
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 

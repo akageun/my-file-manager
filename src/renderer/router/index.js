@@ -16,6 +16,16 @@ export default new Router({
             component: require('@/components/File').default
         },
         {
+            path: '/file/target',
+            name: 'targetFileList',
+            component: require('@/components/File/TargetFileList').default
+        },
+        {
+            path: '/file/save',
+            name: 'saveFileList',
+            component: require('@/components/File/SaveFileList').default
+        },
+        {
             path: '/setting',
             name: 'setting',
             component: require('@/components/Setting').default
