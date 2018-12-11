@@ -20,9 +20,9 @@
                                 <div class="float-right" v-if="file.isDirectory === false">
 
                                     <a class="btn btn-outline-info btn-xs" @click="infoFile(file)">INFO</a>
-                                    <a class="btn btn-outline-success btn-xs" @click="copyFile(file.fileName)">COPY</a>
-                                    <a class="btn btn-outline-warning btn-xs" @click="moveFile(file.fileName)">MOVE</a>
-                                    <!--<a class="btn btn-outline-warning btn-xs" @click="saveFile(file)">MOVE</a>-->
+                                    <!--<a class="btn btn-outline-success btn-xs" @click="copyFile(file.fileName)">COPY</a>-->
+                                    <!--<a class="btn btn-outline-warning btn-xs" @click="moveFile(file.fileName)">MOVE</a>-->
+                                    <a class="btn btn-outline-warning btn-xs" @click="saveFile(file)">MOVE</a>
                                     <a class="btn btn-outline-danger btn-xs" @click="deleteFile(file.fileName)">DELETE</a>
                                 </div>
 
@@ -57,17 +57,18 @@
                                 <label for="memo" class="col-form-label">Memo</label>
                                 <textarea class="form-control" id="memo" name="memo" style="resize: none" rows="5"></textarea>
                             </div>
-                            <!--<div class="form-group">-->
-                                <!--<v-select v-model="tagSelectedList" :options="tagList" multiple></v-select>-->
-                            <!--</div>-->
+                            <div class="form-group">
+                                <v-select v-model="tagSelectedList" :options="tagList" multiple></v-select>
+                            </div>
                             <div class="form-group">
                                 <label for="memo" class="col-form-label"> Type </label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="transType" id="copy_trans" value="COPY" checked>
+                                    <input class="form-check-input" v-model="transType" type="radio" name="transType" id="copy_trans" value="COPY"
+                                           checked>
                                     <label class="form-check-label" for="copy_trans">COPY</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="transType" id="move_trans" value="MOVE">
+                                    <input class="form-check-input" v-model="transType" type="radio" name="transType" id="move_trans" value="MOVE">
                                     <label class="form-check-label" for="move_trans">MOVE</label>
                                 </div>
                             </div>
@@ -100,7 +101,8 @@
                 fileList: {},
                 modal_file_name: '',
                 tagSelectedList: [],
-                tagList: {}
+                tagList: [],
+                transType: 'COPY'
 
             }
         },
@@ -122,7 +124,51 @@
         },
         methods: {
             trans() {
-                console.log(document.getElementById('tmpSelect2').value);
+                let tagJson = [];
+                for (const test of this.tagSelectedList) {
+                    tagJson.push(test.value);
+                }
+                console.log(tagJson);
+
+                const dt = this.getDateForPath();
+
+                const tmpSavePath = path.join(this.savePath, dt.yyyy, dt.mm, dt.dd);
+                this.mkdirSyncRecursive(this.savePath, path.join(dt.yyyy, dt.mm, dt.dd)); //폴더 생성
+
+                const saveFullPath = path.join(tmpSavePath, this.modal_file_name);
+                if (fs.existsSync(saveFullPath)) {
+                    if (confirm('이미 파일이 존재합니다. 덮어쓰기 하시겠습니까?') == false) {
+                        return;
+                    }
+                }
+
+                let fileJson = {};
+                fileJson['savePath'] = this.savePath;
+                fileJson['yyyy'] = dt.yyyy;
+                fileJson['mm'] = dt.mm;
+                fileJson['dd'] = dt.dd;
+                fileJson['fileName'] = this.modal_file_name;
+
+                if (tagJson.length > 0) {
+                    fileJson['tags'] = tagJson;
+                }
+
+                const targetFullPath = path.join(this.targetPath, this.modal_file_name);
+
+                if (this.transType === 'MOVE') {
+                    fs.renameSync(targetFullPath, saveFullPath);
+                    console.log(targetFullPath, ' 는 ', saveFullPath, '로 이동됨');
+
+                } else if (this.transType === 'COPY') {
+                    fs.copyFileSync(targetFullPath, saveFullPath);
+                    console.log(targetFullPath, ' 는 ', saveFullPath, '로 복사됨');
+
+                }
+
+                this.initFileList();
+                this.saveFileDb(fileJson);
+
+                $('#exampleModal').modal('toggle');
             },
             initFileList() {
                 let list = [];
@@ -193,85 +239,27 @@
                     backdrop: 'static'
                 })
 
-                // const tagDb = this.$cmnModule.tagDbConf();
-                //
-                // let vm = this;
-                // tagDb.find({}, function (err, docs) {
-                //     let tmpJson = [];
-                //
-                //     for (const jn of docs) {
-                //         let t = {};
-                //         t.value = jn._id;
-                //         t.label = jn.tagName;
-                //
-                //         tmpJson.push(t);
-                //     }
-                //
-                //     console.log(tmpJson);
-                //
-                //     vm.tagList = tmpJson;
-                //
-                // });
+                const tagDb = this.$cmnModule.tagDbConf();
 
+                let vm = this;
+                tagDb.find({}, function (err, docs) {
+                    let tmpJson = [];
 
-            },
-            copyFile(fileName) {
-                const dt = this.getDateForPath();
+                    for (const jn of docs) {
+                        let t = {};
+                        t.value = jn._id;
+                        t.label = jn.tagName;
 
-                const tmpSavePath = path.join(this.savePath, dt.yyyy, dt.mm, dt.dd);
-                this.mkdirSyncRecursive(this.savePath, path.join(dt.yyyy, dt.mm, dt.dd)); //폴더 생성
-
-                const saveFullPath = path.join(tmpSavePath, fileName);
-                if (fs.existsSync(saveFullPath)) {
-                    if (confirm('이미 파일이 존재합니다. 덮어쓰기 하시겠습니까?') == false) {
-                        return;
+                        tmpJson.push(t);
                     }
-                }
 
-                let fileJson = {};
-                fileJson['savePath'] = this.savePath;
-                fileJson['yyyy'] = dt.yyyy;
-                fileJson['mm'] = dt.mm;
-                fileJson['dd'] = dt.dd;
-                fileJson['fileName'] = fileName;
+                    vm.tagList = tmpJson;
 
-                const targetFullPath = path.join(this.targetPath, fileName);
+                });
 
-                fs.copyFileSync(targetFullPath, saveFullPath);
-                console.log(targetFullPath, ' 는 ', saveFullPath, '로 복사됨');
 
-                this.initFileList();
-                this.saveFileDb(fileJson);
             },
 
-            moveFile(fileName) {
-                const dt = this.getDateForPath();
-
-                const tmpSavePath = path.join(this.savePath, dt.yyyy, dt.mm, dt.dd);
-                this.mkdirSyncRecursive(this.savePath, path.join(dt.yyyy, dt.mm, dt.dd)); //폴더 생성
-
-                const saveFullPath = path.join(tmpSavePath, fileName);
-                if (fs.existsSync(saveFullPath)) {
-                    if (confirm('이미 파일이 존재합니다. 덮어쓰기 하시겠습니까?') == false) {
-                        return;
-                    }
-                }
-
-                const targetFullPath = path.join(this.targetPath, fileName);
-
-                let fileJson = {};
-                fileJson['savePath'] = this.savePath;
-                fileJson['yyyy'] = dt.yyyy;
-                fileJson['mm'] = dt.mm;
-                fileJson['dd'] = dt.dd;
-                fileJson['fileName'] = fileName;
-
-                fs.renameSync(targetFullPath, saveFullPath);
-                console.log(targetFullPath, ' 는 ', saveFullPath, '로 이동됨');
-
-                this.initFileList();
-                this.saveFileDb(fileJson);
-            },
             deleteFile(fileName) {
                 if (confirm('해당파일을 정말로 삭제하시겠습니까?') == false) {
                     return;

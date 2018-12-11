@@ -15,10 +15,10 @@
                 <div class="row no-gutters">
                     <div class="col-12">
                         <ul id="list-group-ul" class="list-group">
-                            <li class="list-group-item" v-for="file in saveFileList">
+                            <li class="list-group-item" v-for="file in getSaveFileList">
                                 {{file.fileName | liveSubstr}}
+                                <span class="mr-1 badge" :class="tt.tagColor" v-for="tt in file.tagsJson">{{tt.tagName}}</span>
 
-                                <hr>
                                 <a class="btn btn-outline-info btn-xs" @click="openFolder(file)">Open Folder</a>
                                 <!--<a class="btn btn-outline-success btn-xs" @click="copyFile(file.fileName)">COPY</a>-->
                                 <!--<a class="btn btn-outline-warning btn-xs" @click="moveFile(file.fileName)">MOVE</a>-->
@@ -26,15 +26,15 @@
 
                                 <div v-if="file.clicked">
                                     <hr>
-                                    <!--<p>-->
-                                    <!--{{file.statInfo}}-->
-                                    <!--</p>-->
+                                    <p>
+                                        {{file}}
+                                    </p>
                                 </div>
+
                             </li>
                         </ul>
                     </div>
                 </div>
-
 
 
             </div>
@@ -52,11 +52,13 @@
         components: {Lnb},
         data() {
             return {
-                saveFileList: {}
+                tagList: [],
+                saveFileList: []
+
             }
         },
         filters: {
-            liveSubstr: function (str) {
+            liveSubstr(str) {
                 if (str.length < 80) {
                     return str;
                 }
@@ -66,11 +68,46 @@
         created() {
             this.initSaveFileList();
         },
+        computed: {
+            getSaveFileList: function () {
+                let vm = this;
+                return this.saveFileList.filter(function (file) {
+                    file.clicked = false;
+
+                    if (file.tags !== undefined) {
+                        let tagsJson = [];
+                        for (const tagId of file.tags) {
+
+                            for (const tagInfo of vm.tagList) {
+                                if (tagId === tagInfo._id) {
+                                    let tmpTagJson = {};
+
+                                    tmpTagJson.tagName = tagInfo.tagName;
+                                    tmpTagJson.tagColor = tagInfo.tagColor;
+
+                                    tagsJson.push(tmpTagJson);
+                                }
+                            }
+
+                        }
+
+                        file.tagsJson = tagsJson;
+                    }
+
+                    return file;
+                })
+            }
+        },
         methods: {
             initSaveFileList() {
+                const tagDb = this.$cmnModule.tagDbConf();
+                let vm = this;
+                tagDb.find({}, function (err, docs) {
+                    vm.tagList = docs;
+                });
+
                 const db = this.$cmnModule.fileDbConf();
 
-                let vm = this;
                 db.find({}, function (err, docs) {
                     if (err) {
                         throw err;
