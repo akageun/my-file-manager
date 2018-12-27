@@ -219,6 +219,9 @@
                 this.getFileList();
             },
             openSaveFileModal(file) {
+                this.tagSelectedList = [];
+                this.modal_file_memo = '';
+
                 this.modal_file_name = file.fileName;
 
                 $("#exampleModal").modal({
