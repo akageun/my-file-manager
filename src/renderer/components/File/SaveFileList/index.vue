@@ -22,21 +22,18 @@
                 <div class="row no-gutters">
                     <div class="col-12 pr-3">
                         <ul id="list-group-ul" class="list-group">
-                            <li class="list-group-item" v-for="file in getSaveFileList" @click="openFileDetailInfo(file)">
+                            <li class="list-group-item" v-for="file in listSoredItem" @click="openFileDetailInfo(file)">
                                 <div class="row">
                                     <div class="col-12">
-                                        {{file.fileName | liveSubstr}} | {{file.clicked}}
+                                        {{file.fileName | liveSubstr}} |
                                         <div class="float-right">
                                             <a class="btn btn-outline-info btn-xs" @click="openFolder(file)">Open Folder</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <span class="mr-1 badge" :class="tt.tagColor" v-for="tt in file.tagsJson">{{tt.tagName}}</span>
-                                    </div>
-                                </div>
-                                <div v-show="file.clicked">
+                                <tag_badge :tags="file.tags" :tag_list="tagList"/>
+
+                                <div class="row" v-show="file.clicked">
                                     <div class="col-12">
                                         {{file}}
                                     </div>
@@ -55,9 +52,11 @@
 <script>
     import path from 'path';
     import electron from 'electron';
+    import tag_badge from './tag_badge';
 
     export default {
         name: "index",
+        components: {tag_badge},
         data() {
             return {
                 tagList: [],
@@ -70,42 +69,18 @@
                     return str;
                 }
                 return str.substring(0, 80) + '...';
+            },
+
+        },
+        computed: {
+            listSoredItem: function () {
+                return this.saveFileList.filter(function (info) {
+                    return info;
+                });
             }
         },
         created() {
             this.initSaveFileList();
-        },
-        computed: {
-            getSaveFileList: function () {
-                let vm = this;
-                this.saveFileList.filter(function (file) {
-                    file.clicked = false;
-
-                    if (file.tags !== undefined) {
-                        let tagsJson = [];
-                        for (const tagId of file.tags) {
-
-                            for (const tagInfo of vm.tagList) {
-                                if (tagId === tagInfo._id) {
-                                    let tmpTagJson = {};
-
-                                    tmpTagJson.tagName = tagInfo.tagName;
-                                    tmpTagJson.tagColor = tagInfo.tagColor;
-
-                                    tagsJson.push(tmpTagJson);
-                                }
-                            }
-
-                        }
-
-                        file.tagsJson = tagsJson;
-                    }
-
-                    return file;
-                });
-
-                return this.saveFileList;
-            }
         },
         methods: {
             openFileDetailInfo(file) {
@@ -114,9 +89,10 @@
                 } else {
                     file = Object.assign({}, file, {clicked: true});
                 }
-                console.log("file : ", file);
+                console.log(file);
+
             },
-            initSaveFileList() {
+            async initSaveFileList() {
                 const tagDb = this.$cmnModule.tagDbConf();
                 let vm = this;
                 tagDb.find({}, function (err, docs) {
@@ -125,12 +101,20 @@
 
                 const db = this.$cmnModule.fileDbConf();
 
-                db.find({}, function (err, docs) {
+                await db.find({}, function (err, docs) {
                     if (err) {
                         throw err;
                     }
                     vm.saveFileList = docs;
+
+                    vm.saveFileList.forEach(function (file) {
+                        file.clicked = false;
+                    });
+
+                    return vm.saveFileList;
                 });
+
+
             },
             openFolder(file) {
                 electron.shell.openItem(path.join(file.savePath, file.yyyy, file.mm, file.dd));
