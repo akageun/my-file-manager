@@ -11,11 +11,18 @@
                         </p>
                     </div>
                 </div>
-
+                <div class="row no-gutters mb-2">
+                    <div class="col-2">
+                        <select v-model="sortType" class="form-control form-control-sm">
+                            <option value="FILENAME_ASC">FileNm ASC</option>
+                            <option value="FILENAME_DESC">FileNm DESC</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="row no-gutters">
                     <div class="col-12">
                         <ul id="list-group-ul" class="list-group">
-                            <li class="list-group-item" v-for="file in fileList">
+                            <li class="list-group-item" v-for="file in listSoredItem">
                                 {{file.fileName | liveSubstr}}
                                 <div class="float-right" v-if="file.isDirectory === false">
 
@@ -102,8 +109,8 @@
                 modal_file_name: '',
                 tagSelectedList: [],
                 tagList: [],
-                transType: 'COPY'
-
+                transType: 'COPY',
+                sortType: 'FILENAME_ASC',
             }
         },
         filters: {
@@ -112,6 +119,22 @@
                     return str;
                 }
                 return str.substring(0, 50) + '...';
+            }
+        },
+        computed: {
+            listSoredItem: function () {
+                const vm = this;
+                this.fileList.sort(function (a, b) {
+                    let rtnValue = 0;
+                    if (vm.sortType === 'FILENAME_DESC') {
+                        rtnValue = vm.sortFileNameDesc(a, b);
+                    } else {
+                        rtnValue = vm.sortFileNameAsc(a, b);
+                    }
+
+                    return rtnValue;
+                });
+                return this.fileList;
             }
         },
         created() {
@@ -123,6 +146,25 @@
             this.initFileList();
         },
         methods: {
+            sortFileNameAsc(a, b) {
+                if (a.fileName < b.fileName) {
+                    return -1;
+                }
+                if (a.fileName > b.fileName) {
+                    return 1;
+                }
+                return 0;
+            },
+            sortFileNameDesc(a, b) {
+                if (a.fileName > b.fileName) {
+                    return -1;
+                }
+                if (a.fileName < b.fileName) {
+                    return 1;
+                }
+                return 0;
+            },
+
             trans() {
                 let tagJson = [];
                 for (const test of this.tagSelectedList) {
