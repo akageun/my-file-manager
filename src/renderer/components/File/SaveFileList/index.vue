@@ -1,7 +1,16 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <div class="w-100">
+            <div class="w-20 pr-2">
+                <div class="row no-gutters">
+                    <div class="col-12">
+                        <p>
+                            Save File Data
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-80">
                 <div class="row no-gutters">
                     <div class="col-12">
                         <p>
@@ -11,20 +20,27 @@
                 </div>
 
                 <div class="row no-gutters">
-                    <div class="col-12">
+                    <div class="col-12 pr-3">
                         <ul id="list-group-ul" class="list-group">
-                            <li class="list-group-item" v-for="file in getSaveFileList">
-                                {{file.fileName | liveSubstr}}
-                                <span class="mr-1 badge" :class="tt.tagColor" v-for="tt in file.tagsJson">{{tt.tagName}}</span>
-
-                                <a class="btn btn-outline-info btn-xs" @click="openFolder(file)">Open Folder</a>
-                                <div v-if="file.clicked">
-                                    <hr>
-                                    <p>
-                                        {{file}}
-                                    </p>
+                            <li class="list-group-item" v-for="file in getSaveFileList" @click="openFileDetailInfo(file)">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{file.fileName | liveSubstr}} | {{file.clicked}}
+                                        <div class="float-right">
+                                            <a class="btn btn-outline-info btn-xs" @click="openFolder(file)">Open Folder</a>
+                                        </div>
+                                    </div>
                                 </div>
-
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span class="mr-1 badge" :class="tt.tagColor" v-for="tt in file.tagsJson">{{tt.tagName}}</span>
+                                    </div>
+                                </div>
+                                <div v-show="file.clicked">
+                                    <div class="col-12">
+                                        {{file}}
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -62,7 +78,7 @@
         computed: {
             getSaveFileList: function () {
                 let vm = this;
-                return this.saveFileList.filter(function (file) {
+                this.saveFileList.filter(function (file) {
                     file.clicked = false;
 
                     if (file.tags !== undefined) {
@@ -86,10 +102,20 @@
                     }
 
                     return file;
-                })
+                });
+
+                return this.saveFileList;
             }
         },
         methods: {
+            openFileDetailInfo(file) {
+                if (file.hasOwnProperty('clicked')) {
+                    file.clicked = !file.clicked;
+                } else {
+                    file = Object.assign({}, file, {clicked: true});
+                }
+                console.log("file : ", file);
+            },
             initSaveFileList() {
                 const tagDb = this.$cmnModule.tagDbConf();
                 let vm = this;
@@ -103,7 +129,6 @@
                     if (err) {
                         throw err;
                     }
-                    console.log(docs);
                     vm.saveFileList = docs;
                 });
             },

@@ -9,11 +9,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <router-link to="/" class="nav-link">
-                        Home <span class="sr-only">(current)</span>
-                    </router-link>
-                </li>
+                <!--<li class="nav-item active">-->
+                    <!--<router-link to="/" class="nav-link">-->
+                        <!--Home <span class="sr-only">(current)</span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">

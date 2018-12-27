@@ -63,14 +63,14 @@
                                 <p>{{modal_file_name}}</p>
                             </div>
                             <div class="form-group">
-                                <label for="memo" class="col-form-label">Memo</label>
+                                <label class="col-form-label">Memo</label>
                                 <textarea class="form-control" v-model="modal_file_memo" style="resize: none" rows="5"></textarea>
                             </div>
                             <div class="form-group">
                                 <v-select v-model="tagSelectedList" :options="tagList" multiple></v-select>
                             </div>
                             <div class="form-group">
-                                <label for="memo" class="col-form-label"> Type </label>
+                                <label class="col-form-label"> Type </label>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" v-model="transType" type="radio" name="transType" id="copy_trans" value="COPY"
                                            checked>
