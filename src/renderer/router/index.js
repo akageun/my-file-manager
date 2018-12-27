@@ -31,9 +31,14 @@ export default new Router({
             component: require('@/components/Setting').default
         },
         {
-            path: '/setting/filePath',
-            name: 'settingFilePath',
-            component: require('@/components/Setting/FilePathManage').default
+            path: '/setting/file/save/path',
+            name: 'settingSavePath',
+            component: require('@/components/Setting/File/SavePath').default
+        },
+        {
+            path: '/setting/file/target/path',
+            name: 'settingTargetPath',
+            component: require('@/components/Setting/File/TargetPath').default
         },
         {
             path: '/setting/tags',

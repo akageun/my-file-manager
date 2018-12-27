@@ -12,10 +12,10 @@ export default ({
             name: 'settingConf',
             cwd: 'mfm',
             defaults: {
-                file: {
-                    targetPath: defaultUsePath,
-                    savePath: defaultUsePath
-                }
+                savePath: {
+                    fullPath: defaultUsePath
+                },
+                targetPath: {}
             }
         });
     },

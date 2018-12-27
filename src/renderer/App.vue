@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import Gnb from '@/components/Layouts/Gnb'
+    import Gnb from '@/components/Layouts/Gnb';
 
     export default {
         name: 'my_file_manager',
@@ -18,7 +18,7 @@
 
 <style>
     /* CSS */
-    #app{
+    #app {
         margin-bottom: 50px;
     }
 </style>

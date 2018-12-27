@@ -36,6 +36,8 @@
     import Lnb from "../lnb";
     import StrUtils from '@/service/utils/StrUtils';
 
+    const crypto = require('crypto');
+
     export default {
         name: "index",
         components: {Lnb},
