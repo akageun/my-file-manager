@@ -1,9 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <Lnb/>
-
-            <div class="w-80">
+            <div class="w-100">
                 <div class="row no-gutters">
                     <div class="col-12">
                         <p>
@@ -20,10 +18,6 @@
                                 <span class="mr-1 badge" :class="tt.tagColor" v-for="tt in file.tagsJson">{{tt.tagName}}</span>
 
                                 <a class="btn btn-outline-info btn-xs" @click="openFolder(file)">Open Folder</a>
-                                <!--<a class="btn btn-outline-success btn-xs" @click="copyFile(file.fileName)">COPY</a>-->
-                                <!--<a class="btn btn-outline-warning btn-xs" @click="moveFile(file.fileName)">MOVE</a>-->
-                                <!--<a class="btn btn-outline-danger btn-xs" @click="deleteFile(file.fileName)">DELETE</a>-->
-
                                 <div v-if="file.clicked">
                                     <hr>
                                     <p>
@@ -43,18 +37,15 @@
 </template>
 
 <script>
-    import Lnb from "../lnb";
     import path from 'path';
     import electron from 'electron';
 
     export default {
         name: "index",
-        components: {Lnb},
         data() {
             return {
                 tagList: [],
                 saveFileList: []
-
             }
         },
         filters: {

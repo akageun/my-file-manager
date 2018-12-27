@@ -14,27 +14,26 @@
                         Home <span class="sr-only">(current)</span>
                     </router-link>
                 </li>
-                <li class="nav-item">
-                    <router-link to="/file" class="nav-link">
-                        File
-                    </router-link>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Files
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <router-link to="/file/target" class="dropdown-item">
+                            Target
+                        </router-link>
+                        <router-link to="/file/save" class="dropdown-item">
+                            Saved
+                        </router-link>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <router-link to="/setting" class="nav-link">
                         Setting
                     </router-link>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
+
             </ul>
         </div>
     </nav>

@@ -51,14 +51,12 @@
                 targetPathList: [],
                 targetNm: '',
                 fullPath: ''
-
             }
         },
         created() {
             const settingConf = this.$cmnModule.settingConf();
 
             const confJson = settingConf.get('targetPath');
-            console.log(confJson);
             this.targetPathList = confJson;
 
         },

@@ -4,12 +4,11 @@
             <lnb/>
 
             <div class="w-75">
-                <div class="row no-gutters">
+                <div class="row no-gutters pt-3">
                     <div class="col-12">
-                        <label>Tags</label>
                         <div class="form-inline">
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-sm" v-model="tagName"/>
+                                <input type="text" class="form-control form-control-sm" v-model="tagName" placeholder="Tag Name"/>
                                 <select class="form-control form-control-sm" v-model="tagColor">
                                     <option value="">==COLOR==</option>
                                     <option v-for="color in labelColor">
