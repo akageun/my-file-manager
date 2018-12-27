@@ -8,8 +8,9 @@
                     <div class="col-12">
                         <div class="form-inline">
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-sm" v-model="tagName" placeholder="Tag Name"/>
-                                <select class="form-control form-control-sm" v-model="tagColor">
+                                <input type="text" id="add_tag_text" class="form-control form-control-sm" v-model="tagName" placeholder="Tag Name"
+                                       v-on:keyup.enter="enterEvent('ADD')"/>
+                                <select class="form-control form-control-sm" v-model="tagColor" id="add_tag_color">
                                     <option value="">==COLOR==</option>
                                     <option v-for="color in labelColor">
                                         {{color}}
@@ -52,7 +53,8 @@
                             <input type="hidden" v-model="modifyTagId"/>
                             <div class="form-group">
                                 <label for="tag_name" class="col-form-label">Tag Name</label>
-                                <input type="text" class="form-control form-control-sm" v-model="modifyTagName" id="tag_name"/>
+                                <input type="text" class="form-control form-control-sm" v-model="modifyTagName"
+                                       v-on:keyup.enter="enterEvent('MODIFY')" id="tag_name"/>
                             </div>
                             <div class="form-group">
                                 <label for="tag_color">Color</label>
@@ -113,6 +115,14 @@
                 const tmpTagColor = this.tagColor;
                 if (StrUtils.isEmpty(tmpTagName)) {
                     alert("Tag 명을 입력해주세요.");
+                    document.getElementById("add_tag_text").focus();
+                    return;
+                }
+
+                if (StrUtils.isEmpty(tmpTagColor)) {
+                    alert("Tag 컬러를 선택해주세요.");
+                    document.getElementById("add_tag_color").focus();
+                    return;
                 }
 
                 const tagDb = this.$cmnModule.tagDbConf();
@@ -169,18 +179,24 @@
                 }
 
                 const tagDb = this.$cmnModule.tagDbConf();
+                const vm = this;
                 tagDb.remove({_id: tag._id}, function (err, docs) {
                     if (err) {
                         throw err;
                     }
 
-                    this.initTagList();
+                    vm.initTagList();
                 });
             },
-            getTagJson(tag) {
-                let tmpJson = {};
+            enterEvent(eventStr) {
+                if (event.keyCode == 13) {
+                    if (eventStr === 'ADD') {
+                        this.saveTag();
+                    } else if (eventStr === 'MODIFY') {
+                        this.modifyTag();
+                    }
 
-                return tmpJson;
+                }
             }
         }
     }
