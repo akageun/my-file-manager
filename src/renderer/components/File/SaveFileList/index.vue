@@ -25,7 +25,7 @@
                             <li class="list-group-item" v-for="file in listSoredItem" @click="openFileDetailInfo(file)">
                                 <div class="row">
                                     <div class="col-12">
-                                        {{file.fileName | liveSubstr}} |
+                                        {{file.fileName | liveSubstr}}
                                         <div class="float-right">
                                             <a class="btn btn-outline-info btn-xs" @click="openFolder(file)">Open Folder</a>
                                         </div>
@@ -35,7 +35,7 @@
 
                                 <div class="row" v-show="file.clicked">
                                     <div class="col-12">
-                                        {{file}}
+                                        {{file.memo}}
                                     </div>
                                 </div>
                             </li>
@@ -74,9 +74,7 @@
         },
         computed: {
             listSoredItem: function () {
-                return this.saveFileList.filter(function (info) {
-                    return info;
-                });
+                return this.saveFileList;
             }
         },
         created() {
@@ -92,30 +90,38 @@
                 console.log(file);
 
             },
-            initSaveFileList() {
+            async initSaveFileList() {
                 const tagDb = this.$cmnModule.tagDbConf();
                 let vm = this;
                 tagDb.find({}, function (err, docs) {
                     vm.tagList = docs;
                 });
 
+                this.getSaveFileDbFind().then(result => {
+                    this.saveFileList = result;
+                })
+            },
+            getSaveFileDbFind() {
                 const db = this.$cmnModule.fileDbConf();
 
-                db.find({}, function (err, docs) {
-                    if (err) {
-                        throw err;
-                    }
-                    vm.saveFileList = docs;
+                return new Promise(function (resolve, reject) {
+                    db.find({}, function (err, docs) {
+                        if (err) {
+                            throw err;
+                        }
+                        let saveFileList = docs;
 
-                    vm.saveFileList.forEach(function (file) {
-                        file.clicked = false;
+                        saveFileList.forEach(function (file) {
+                            file.clicked = false;
+                        });
+
+                        resolve(saveFileList);
                     });
 
-                    return vm.saveFileList;
+
                 });
-
-
             },
+
             openFolder(file) {
                 electron.shell.openItem(path.join(file.savePath, file.yyyy, file.mm, file.dd));
             }
