@@ -92,7 +92,7 @@
                 console.log(file);
 
             },
-            async initSaveFileList() {
+            initSaveFileList() {
                 const tagDb = this.$cmnModule.tagDbConf();
                 let vm = this;
                 tagDb.find({}, function (err, docs) {
@@ -101,7 +101,7 @@
 
                 const db = this.$cmnModule.fileDbConf();
 
-                await db.find({}, function (err, docs) {
+                db.find({}, function (err, docs) {
                     if (err) {
                         throw err;
                     }
