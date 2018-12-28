@@ -29,6 +29,7 @@
                                 <b>{{key}}</b> : {{value}}
                                 <div class="float-right">
                                     <a class="btn btn-outline-info btn-xs" @click="deleteTargetFile(key)">DELETE</a>
+                                    <a class="btn btn-outline-info btn-xs" @click="openFolder(value)">Open Folder</a>
                                 </div>
                             </li>
                         </ul>
@@ -42,6 +43,8 @@
 <script>
     import Lnb from "../../lnb";
     import StrUtils from '@/service/utils/StrUtils';
+    import electron from 'electron';
+    import path from 'path';
 
     export default {
         name: "index",
@@ -90,6 +93,10 @@
                 settingConf.set('targetPath', confJson);
 
                 this.targetPathList = confJson;
+            },
+
+            openFolder(goPath) {
+                electron.shell.openItem(path.join(goPath));
             }
         }
     }
