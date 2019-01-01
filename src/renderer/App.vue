@@ -15,7 +15,6 @@
                         v-for="(item, i) in items"
                         :key="i"
                 >
-
                     <v-list-tile-action>
                         <router-link :to="item.link">
                             <v-icon v-html="item.icon"></v-icon>
@@ -76,7 +75,6 @@
 </template>
 
 <script>
-    import WebFontLoader from 'webfontloader'
     import Gnb from '@/components/Layouts/Gnb';
 
     export default {
@@ -105,17 +103,8 @@
             }
         },
         mounted() {
-            WebFontLoader.load({
-                google: {
-                    families: ['Roboto:100,300,400,500,700,900']
-                },
-                active: this.setFontLoaded
-            })
         },
         methods: {
-            setFontLoaded() {
-                this.$emit('font-loaded')
-            }
         },
         components: {
             Gnb

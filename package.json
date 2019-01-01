@@ -16,8 +16,7 @@
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "test": "npm run unit && npm run e2e",
-    "unit": "karma start test/unit/karma.conf.js",
-    "postinstall": ""
+    "unit": "karma start test/unit/karma.conf.js"
   },
   "build": {
     "productName": "my_file_manager",
@@ -61,14 +60,13 @@
     "material-design-icons-iconfont": "^4.0.3",
     "nedb": "^1.8.0",
     "popper.js": "^1.14.3",
-    "vue": "^2.5.16",
+    "vue": "^2.5.18",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vue-select": "^2.5.1",
     "vuetify": "^1.3.15",
     "vuex": "^3.0.1",
-    "vuex-electron": "^1.0.0",
-    "webfontloader": "^1.6.28"
+    "vuex-electron": "^1.0.0"
   },
   "devDependencies": {
     "ajv": "^6.5.0",
@@ -115,7 +113,7 @@
     "vue-html-loader": "^1.2.4",
     "vue-loader": "^15.2.4",
     "vue-style-loader": "^4.1.0",
-    "vue-template-compiler": "^2.5.16",
+    "vue-template-compiler": "^2.5.18",
     "webpack-cli": "^3.0.8",
     "webpack": "^4.15.1",
     "webpack-dev-server": "^3.1.4",

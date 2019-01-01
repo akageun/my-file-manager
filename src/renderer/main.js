@@ -5,10 +5,6 @@ import App from './App'
 import router from './router'
 import store from './store'
 
-// import 'expose-loader?$!expose-loader?jQuery!jquery'
-// import 'bootstrap'
-// import 'bootstrap/dist/css/bootstrap.min.css'
-
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import Vuetify from 'vuetify'
