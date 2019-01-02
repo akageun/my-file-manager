@@ -1,54 +1,74 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <lnb/>
+    <v-container fluid>
+        <v-layout>
+            <v-flex
+                    xs12
+                    md12
+            >
+                <v-text-field
+                        v-model="targetNm"
+                        label="Target Name"
+                        required
+                ></v-text-field>
+                <v-text-field
+                        v-model="fullPath"
+                        label="Target Path"
+                        required
+                ></v-text-field>
+            </v-flex>
 
-            <div class="w-75 pr-3">
-                <div class="row no-gutters">
-                    <div class="col-12 ">
-                        <div class="form-horizontal  mt-3">
-                            <div class="form-group">
-                                <input type="text" class="form-control form-control-sm" v-model="targetNm" placeholder="Target Name"/>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control form-control-sm" v-model="fullPath" placeholder="Target Path"/>
-                            </div>
-                        </div>
+        </v-layout>
+        <v-layout>
+            <v-flex
+                    xs12
+                    md12
+            >
+                <v-btn depressed small color="primary" @click="saveTargetPath()">SAVE</v-btn>
 
-                        <div class="row">
-                            <div class="col-12">
-                                <a class="btn btn-outline-warning btn-sm" @click="saveTargetPath()">SAVE</a>
+            </v-flex>
+        </v-layout>
+        <br>
+        <v-layout row>
+            <v-flex xs12 sm12>
+
+                <v-list two-line subheader>
+                    <v-subheader inset>Folders</v-subheader>
+
+                    <v-list-tile
+                            v-for="(value, key) in targetPathList" :key="value.key"
+                            avatar
+                            @click=""
+                    >
+                        <v-list-tile-content>
+                            <v-list-tile-title>{{ key }}</v-list-tile-title>
+                            <v-list-tile-sub-title>{{ value }}</v-list-tile-sub-title>
+                        </v-list-tile-content>
+
+                        <v-list-tile-action>
+                            <div>
+                                <v-btn icon >
+                                    <v-icon color="red lighten-1" @click="deleteTargetFile(key)">delete_forever</v-icon>
+                                </v-btn>
+                                <v-btn icon>
+                                    <v-icon color="purple lighten-1" @click="openFolder(value)">folder_open</v-icon>
+                                </v-btn>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row no-gutters">
-                    <div class="col-12 ">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item" v-for="(value, key) in targetPathList" :key="value.key">
-                                <b>{{key}}</b> : {{value}}
-                                <div class="float-right">
-                                    <a class="btn btn-outline-info btn-xs" @click="deleteTargetFile(key)">DELETE</a>
-                                    <a class="btn btn-outline-info btn-xs" @click="openFolder(value)">Open Folder</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        </v-list-tile-action>
+                    </v-list-tile>
+                </v-list>
+
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
-    import Lnb from "../../lnb";
     import StrUtils from '@/service/utils/StrUtils';
     import electron from 'electron';
     import path from 'path';
 
     export default {
         name: "index",
-        components: {Lnb},
         data() {
             return {
                 targetPathList: [],

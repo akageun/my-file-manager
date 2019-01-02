@@ -1,29 +1,28 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <lnb/>
+    <v-container fluid>
+        <v-layout>
+            <v-flex
+                    xs12
+                    md12
+            >
+                <v-text-field
+                        v-model="fullPath"
+                        label="Save Path"
+                        required
+                ></v-text-field>
+            </v-flex>
 
-            <div class="w-75">
-                <div class="row no-gutters">
-                    <div class="col-12">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label>Save Path</label>
-                                <input type="text" name="savePath" class="form-control form-control-sm" v-model="fullPath"/>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12">
-                                <a class="btn btn-outline-warning btn-xs" @click="saveFileConf()">SAVE</a>
-                                <a class="btn btn-outline-info btn-xs" @click="openFolder(fullPath)">Open Folder</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </v-layout>
+        <v-layout>
+            <v-flex
+                    xs12
+                    md12
+            >
+                <v-btn depressed small color="primary" @click="saveFileConf()">SAVE</v-btn>
+                <v-btn depressed small color="purple" @click="openFolder(fullPath)">Open Folder</v-btn>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>

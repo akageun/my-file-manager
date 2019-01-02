@@ -21,11 +21,6 @@ export default new Router({
             component: require('@/components/File/SaveFileList').default
         },
         {
-            path: '/setting',
-            name: 'setting',
-            component: require('@/components/Setting').default
-        },
-        {
             path: '/setting/file/save/path',
             name: 'settingSavePath',
             component: require('@/components/Setting/File/SavePath').default

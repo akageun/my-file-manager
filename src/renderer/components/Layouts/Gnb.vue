@@ -1,50 +1,97 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <router-link to="/" class="navbar-brand">
-            M.F.M
-        </router-link>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <!--<li class="nav-item active">-->
-                    <!--<router-link to="/" class="nav-link">-->
-                        <!--Home <span class="sr-only">(current)</span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Files
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <router-link to="/file/target" class="dropdown-item">
-                            Target
+    <div>
+        <v-navigation-drawer
+                persistent
+                :clipped="clipped"
+                v-model="drawer"
+                enable-resize-watcher
+                fixed
+                app
+        >
+            <v-list>
+                <v-list-tile
+                        value="true"
+                        v-for="(item, i) in items"
+                        :key="i"
+                >
+                    <v-list-tile-action>
+                        <router-link class="white--text" :to="item.link">
+                            <v-icon v-html="item.icon"></v-icon>
                         </router-link>
-                        <router-link to="/file/save" class="dropdown-item">
-                            Saved
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <router-link class="white--text" :to="item.link">
+                            <v-list-tile-title v-text="item.title"></v-list-tile-title>
                         </router-link>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <router-link to="/setting" class="nav-link">
-                        Setting
-                    </router-link>
-                </li>
+                    </v-list-tile-content>
 
-            </ul>
-        </div>
-    </nav>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
+        <v-toolbar
+                app
+                :clipped-left="clipped"
+        >
+            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+            <router-link class="white--text" to="/">
+                <v-toolbar-title v-text="title"></v-toolbar-title>
+            </router-link>
+        </v-toolbar>
+    </div>
 </template>
 
 <script>
     export default {
-        name: "Gnb"
+        name: "Gnb",
+        data() {
+            return {
+                clipped: false,
+                drawer: false,
+                items: [
+                    {
+                        icon: 'bubble_chart',
+                        title: 'Home',
+                        link: '/'
+                    },
+                    {
+                        icon: 'bubble_chart',
+                        title: 'Target File List',
+                        link: '/file/target'
+                    },
+                    {
+                        icon: 'bubble_chart',
+                        title: 'Saved File List',
+                        link: '/file/save'
+                    },
+                    {
+                        icon: 'bubble_chart',
+                        title: 'Setting Save Path',
+                        link: '/setting/file/save/path'
+                    },
+                    {
+                        icon: 'bubble_chart',
+                        title: 'Setting Target Path',
+                        link: '/setting/file/target/path'
+                    },
+                    {
+                        icon: 'bubble_chart',
+                        title: 'Setting Tag Manage',
+                        link: '/setting/tags'
+                    }
+                ],
+                rightDrawer: false,
+                title: 'M.F.M'
+            }
+        },
     }
 </script>
 
 <style scoped>
+    a {
+        text-decoration: none;
+    }
 
+    a:hover {
+        text-decoration: underline;
+    }
 </style>
