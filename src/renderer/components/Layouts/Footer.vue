@@ -1,6 +1,17 @@
 <template>
     <v-footer app>
-        <span>&copy; 2017</span>
+        <v-card
+                class="flex"
+                flat
+                tile
+        >
+            <v-card-actions dark class="justify-center">
+                &copy;2018 — <strong>My File Manager</strong>
+            </v-card-actions>
+
+        </v-card>
+
+
     </v-footer>
 </template>
 

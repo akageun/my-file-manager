@@ -1,79 +1,117 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <lnb/>
+    <v-container fluid>
+        <v-layout>
+            <v-flex
+                    xs12
+                    sm12
+                    md12
+                    d-flex
+            >
+                <v-text-field
+                        v-model="tagName"
+                        label="Tag Name"
+                        required
+                ></v-text-field>
+            </v-flex>
+            <v-flex
+                    xs12
+                    sm12
+                    md12
+                    d-flex
+            >
+                <v-select
+                        :items="labelColor"
+                        label="Label Color"
+                        outline
+                        dark
+                ></v-select>
 
-            <div class="w-75">
-                <div class="row no-gutters pt-3">
-                    <div class="col-12">
-                        <div class="form-inline">
-                            <div class="form-group">
-                                <input type="text" id="add_tag_text" class="form-control form-control-sm" v-model="tagName" placeholder="Tag Name"
-                                       v-on:keyup.enter="enterEvent('ADD')"/>
-                                <select class="form-control form-control-sm" v-model="tagColor" id="add_tag_color">
-                                    <option value="">==COLOR==</option>
-                                    <option v-for="color in labelColor">
-                                        {{color}}
-                                    </option>
-                                </select>
-                                <button class="btn btn-outline-success btn-sm" @click="saveTag()">저장</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="row no-gutters">
-                    <div class="col-12">
+            </v-flex>
+        </v-layout>
 
-                        <ul id="list-group-ul" class="list-group">
-                            <li class="list-group-item" v-for="tag in tagList">
-                                <span class="badge" :class="tag.tagColor">{{tag.tagName }}</span>
-                                <div class="float-right">
-                                    <a class="btn btn-outline-warning btn-xs" @click="openModifyTag(tag)">MODIFY</a>
-                                    <a class="btn btn-outline-dark btn-xs" @click="deleteTag(tag)">DELETE</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </v-container>
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="modifyModalFrm" onsubmit="return false;">
-                            <input type="hidden" v-model="modifyTagId"/>
-                            <div class="form-group">
-                                <label for="tag_name" class="col-form-label">Tag Name</label>
-                                <input type="text" class="form-control form-control-sm" v-model="modifyTagName"
-                                       v-on:keyup.enter="enterEvent('MODIFY')" id="tag_name"/>
-                            </div>
-                            <div class="form-group">
-                                <label for="tag_color">Color</label>
-                                <select id="tag_color" class="form-control form-control-sm" v-model="modifyTagColor">
-                                    <option v-for="color in labelColor">
-                                        {{color}}
-                                    </option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" @click="modifyTag">Modify</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!--<div class="container-fluid">-->
+        <!--<div class="row">-->
+
+            <!--<v-chip-->
+                    <!--v-model="chip3"-->
+                    <!--close-->
+                    <!--color="green"-->
+                    <!--outline-->
+            <!--&gt;Success</v-chip>-->
+
+            <!--<div class="w-75">-->
+                <!--<div class="row no-gutters pt-3">-->
+                    <!--<div class="col-12">-->
+                        <!--<div class="form-inline">-->
+                            <!--<div class="form-group">-->
+                                <!--<input type="text" id="add_tag_text" class="form-control form-control-sm" v-model="tagName" placeholder="Tag Name"-->
+                                       <!--v-on:keyup.enter="enterEvent('ADD')"/>-->
+                                <!--<select class="form-control form-control-sm" v-model="tagColor" id="add_tag_color">-->
+                                    <!--<option value="">==COLOR==</option>-->
+                                    <!--<option v-for="color in labelColor">-->
+                                        <!--{{color}}-->
+                                    <!--</option>-->
+                                <!--</select>-->
+                                <!--<button class="btn btn-outline-success btn-sm" @click="saveTag()">저장</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<hr>-->
+                <!--<div class="row no-gutters">-->
+                    <!--<div class="col-12">-->
+
+                        <!--<ul id="list-group-ul" class="list-group">-->
+                            <!--<li class="list-group-item" v-for="tag in tagList">-->
+                                <!--<span class="badge" :class="tag.tagColor">{{tag.tagName }}</span>-->
+                                <!--<div class="float-right">-->
+                                    <!--<a class="btn btn-outline-warning btn-xs" @click="openModifyTag(tag)">MODIFY</a>-->
+                                    <!--<a class="btn btn-outline-dark btn-xs" @click="deleteTag(tag)">DELETE</a>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+            <!--<div class="modal-dialog modal-lg" role="document">-->
+                <!--<div class="modal-content">-->
+                    <!--<div class="modal-header">-->
+                        <!--<h5 class="modal-title" id="exampleModalLabel">New message</h5>-->
+                        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                            <!--<span aria-hidden="true">&times;</span>-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <!--<div class="modal-body">-->
+                        <!--<form id="modifyModalFrm" onsubmit="return false;">-->
+                            <!--<input type="hidden" v-model="modifyTagId"/>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="tag_name" class="col-form-label">Tag Name</label>-->
+                                <!--<input type="text" class="form-control form-control-sm" v-model="modifyTagName"-->
+                                       <!--v-on:keyup.enter="enterEvent('MODIFY')" id="tag_name"/>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="tag_color">Color</label>-->
+                                <!--<select id="tag_color" class="form-control form-control-sm" v-model="modifyTagColor">-->
+                                    <!--<option v-for="color in labelColor">-->
+                                        <!--{{color}}-->
+                                    <!--</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                    <!--<div class="modal-footer">-->
+                        <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                        <!--<button type="button" class="btn btn-primary" @click="modifyTag">Modify</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 </template>
 
 <script>
@@ -88,7 +126,7 @@
         },
         data() {
             return {
-                labelColor: ['badge-primary', 'badge-info', 'badge-secondary', 'badge-success', 'badge-danger', 'badge-warning', 'badge-light', 'badge-dark'],
+                labelColor: ['green', 'cyan', 'teal', 'lime', 'yellow', 'orange', 'purple', 'grey'],
                 tagList: {},
                 tagName: '',
                 tagColor: '',
