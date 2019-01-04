@@ -1,52 +1,41 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="w-20 pr-2">
-                <div class="row no-gutters">
-                    <div class="col-12">
-                        <p>
-                            Save File Data
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="w-80">
-                <div class="row no-gutters">
-                    <div class="col-12">
-                        <p>
-                            <b>Save File Data</b>
-                        </p>
-                    </div>
-                </div>
+    <v-container fluid>
+        <v-layout>
+            <v-flex
+                    xs12
+                    md12
+            >
+                <v-toolbar-title>Save File Data</v-toolbar-title>
+                <hr>
+                <v-list>
+                    <v-list-group
+                            v-for="file in listSoredItem"
+                            v-model="file.clicked"
+                            :key="file.fileName"
+                    >
+                        <v-list-tile slot="activator">
+                            <v-list-tile-content>
+                                <v-list-tile-title>{{file.fileName | liveSubstr}}</v-list-tile-title>
+                                <v-list-tile-sub-title>
+                                    <tag_badge :tags="file.tags" :tag_list="tagList"/>
+                                </v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
 
-                <div class="row no-gutters">
-                    <div class="col-12 pr-3">
-                        <ul id="list-group-ul" class="list-group">
-                            <li class="list-group-item" v-for="file in listSoredItem" @click="openFileDetailInfo(file)">
-                                <div class="row">
-                                    <div class="col-12">
-                                        {{file.fileName | liveSubstr}}
-                                        <div class="float-right">
-                                            <a class="btn btn-outline-info btn-xs" @click="openFolder(file)">Open Folder</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <tag_badge :tags="file.tags" :tag_list="tagList"/>
+                        <v-list-tile>
+                            <v-list-tile-content>
+                                <v-list-tile-sub-title>{{file.memo}}</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                            <v-btn icon @click="openFolder(file)">
+                                <v-icon>folder_open</v-icon>
+                            </v-btn>
+                        </v-list-tile>
+                    </v-list-group>
+                </v-list>
 
-                                <div class="row" v-show="file.clicked">
-                                    <div class="col-12">
-                                        {{file.memo}}
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-    </div>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -81,15 +70,15 @@
             this.initSaveFileList();
         },
         methods: {
-            openFileDetailInfo(file) {
-                if (file.hasOwnProperty('clicked')) {
-                    file.clicked = !file.clicked;
-                } else {
-                    file = Object.assign({}, file, {clicked: true});
-                }
-                console.log(file);
-
-            },
+            // openFileDetailInfo(file) {
+            //     if (file.hasOwnProperty('clicked')) {
+            //         file.clicked = !file.clicked;
+            //     } else {
+            //         file = Object.assign({}, file, {clicked: true});
+            //     }
+            //     console.log(file);
+            //
+            // },
             async initSaveFileList() {
                 const tagDb = this.$cmnModule.tagDbConf();
                 let vm = this;
